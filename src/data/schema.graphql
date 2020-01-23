@@ -1,0 +1,47 @@
+fragment Personfields on Person{
+    id
+    vorname
+    nachname
+    skill
+    geburtsdatum
+}
+
+fragment PageInfo on GraphQLPaginationPageInfo {
+  number
+  size
+  totalElements
+  totalPages
+}
+
+query FindPersonlistBy($vorname:String,$nachane:String,$skill:String,$geburtsdatum:Date,$pagination: GraphQLPaginationInput){
+    findPersonlistBy(
+        vorname:$vorname
+        nachname:$nachane
+        skill:$skill
+        geburtsdatum:$geburtsdatum
+         pagination: $pagination
+
+
+    ){ pageInfo {
+      ...PageInfo
+    }result{
+     
+         ...Personfields
+    }
+}}
+
+mutation RegisterPerson($vorname:String!,$nachname:String!,$skill:String!,$geburtsdatum:Date!){
+    savePerson(vorname:$vorname,nachname:$nachname, skill:$skill, geburtsdatum:$geburtsdatum){
+        ...Personfields
+    }
+}
+
+mutation updatePerson($id:Int,$input:InputPerson!){
+    updatePerson(id:$id,pr:$input){
+        ...Personfields
+    }
+}
+
+mutation deletePerson($id:Int!){
+    deletePerson(id:$id)
+}

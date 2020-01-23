@@ -1,0 +1,31 @@
+schema: http://localhost:8081/graphql
+documents: ./src/data/**/*.graphql
+generates:
+  ./src/data/datatypes.ts:
+    plugins:
+      - typescript
+    config:
+      defaultMapper: any
+      contextType: ./#Context
+      maybeValue: T | null | undefined
+  ./src/data:
+    preset: near-operation-file
+    presetConfig:
+      extension: .generated.tsx
+      baseTypesPath: datatypes.ts
+    plugins:
+      - typescript-operations
+      - typescript-react-apollo
+    config:
+      defaultMapper: any
+      contextType: ./#Context
+      withHooks: true
+      withHOC: false
+      withComponent: false
+      withMutationFn: false
+      reactApolloVersion: 3
+      skipTypename: true
+  ./src/data/fragmentTypes.json:
+    plugins:
+      - fragment-matcher
+
